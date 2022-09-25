@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Manger {
+    private long id;
     private String name;
     private int amount;
     private int dept;
@@ -13,6 +14,9 @@ public class Manger {
     public Manger(String name, int dept) {
         this.name = name;
         this.dept = dept;
+    }
+
+    public Manger() {
     }
 
     public void setAmount(int amount) {
