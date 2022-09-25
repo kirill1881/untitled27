@@ -67,12 +67,43 @@ public class Main {
 
                     String sql2 = connectUsers(uId, mId, map, map1);
                     statement.executeUpdate(sql2);
+                    break;
+                case 4:
+                    System.out.println(allJoins());
 
             }
             command = scanner.nextInt();
         }
     }
 
+    public static Map<User, Manger> allJoins() throws Exception{
+        String sql = "select * from manager_and_user";
+        ResultSet rs = statement.executeQuery(sql);
+        Map<User, Manger> map = new HashMap<>();
+        List<User> list  = new ArrayList<>();
+        List<Manger> list1  = new ArrayList<>();
+        while (rs.next()){
+            String sql1 = "select * from users1 where id = "+rs.getString(2);
+            String sql2 = "select * from managers where id = " + rs.getString(3);
+            ResultSet resultSet = statement.executeQuery(sql1);
+            User user1 = new User();
+            while (resultSet.next()){
+                user1.setId(resultSet.getLong(1));
+                user1.setName(resultSet.getString(2));
+                user1.setLastName(resultSet.getString(3));
+                user1.setAge(Integer.parseInt(resultSet.getString(4)));
+            }
+            Manger manager1 = new Manger();
+            resultSet = statement.executeQuery(sql2);
+            while (resultSet.next()) {
+                manager1.setId(resultSet.getLong(1));
+                manager1.setName(resultSet.getString(2));
+                manager1.setDept(resultSet.getInt(4));
+            }
+            map.put(user1, manager1);
+        }
+        return map;
+    }
     public static String connectUsers(int u, int m, Map<Integer, User> map1,
                                     Map<Integer, Manger> map2){
         User user1 = map1.get(u);
